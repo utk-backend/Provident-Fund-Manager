@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="V2__create_contribution_entries_table" author="pfmanager">
+        <createTable tableName="contribution_entries">
+            <column name="transaction_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="participant_id" type="VARCHAR(50)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_contribution_participant"
+                             references="participants(participant_id)"/>
+            </column>
+            <column name="entry_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="effective_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recorded_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="note" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="reverses_transaction_id" type="UUID">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Business constraint: amount must be positive -->
+        <sql>
+            ALTER TABLE contribution_entries
+                ADD CONSTRAINT chk_contribution_amount_positive CHECK (amount > 0);
+        </sql>
+
+        <!-- Business constraint: entry_type is always a known value -->
+        <sql>
+            ALTER TABLE contribution_entries
+                ADD CONSTRAINT chk_contribution_entry_type CHECK (entry_type IN ('CONTRIBUTION', 'REVERSAL'));
+        </sql>
+
+        <!-- Business constraint: currency is INR only in Phase 1 -->
+        <sql>
+            ALTER TABLE contribution_entries
+                ADD CONSTRAINT chk_contribution_currency CHECK (currency = 'INR');
+        </sql>
+
+        <!-- Reference uniqueness per participant -->
+        <createIndex tableName="contribution_entries"
+                     indexName="uq_contribution_participant_reference"
+                     unique="true">
+            <column name="participant_id"/>
+            <column name="reference"/>
+        </createIndex>
+
+        <!-- Index for participant history queries -->
+        <createIndex tableName="contribution_entries"
+                     indexName="idx_contribution_participant_id">
+            <column name="participant_id"/>
+        </createIndex>
+
+        <!-- Index for effective_date and recorded_at range queries -->
+        <createIndex tableName="contribution_entries"
+                     indexName="idx_contribution_effective_date">
+            <column name="effective_date"/>
+        </createIndex>
+
+        <createIndex tableName="contribution_entries"
+                     indexName="idx_contribution_recorded_at">
+            <column name="recorded_at"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

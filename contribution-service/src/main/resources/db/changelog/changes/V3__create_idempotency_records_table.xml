@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="V3__create_idempotency_records_table" author="pfmanager">
+        <createTable tableName="idempotency_records">
+            <column name="idempotency_key" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <!-- SHA-256 hash of the canonical request body -->
+            <column name="request_hash" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- The transaction ID that was created for this key -->
+            <column name="transaction_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Index to look up by transaction_id if needed -->
+        <createIndex tableName="idempotency_records"
+                     indexName="idx_idempotency_transaction_id">
+            <column name="transaction_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

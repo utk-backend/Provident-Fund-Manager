@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="V4__seed_participants" author="pfmanager">
+        <insert tableName="participants">
+            <column name="participant_id" value="PF-10001"/>
+            <column name="name" value="Aarav Sharma"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="created_at" valueDate="2026-01-01T00:00:00Z"/>
+        </insert>
+        <insert tableName="participants">
+            <column name="participant_id" value="PF-10002"/>
+            <column name="name" value="Priya Mehta"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="created_at" valueDate="2026-01-01T00:00:00Z"/>
+        </insert>
+        <insert tableName="participants">
+            <column name="participant_id" value="PF-10003"/>
+            <column name="name" value="Rohan Verma"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="created_at" valueDate="2026-01-01T00:00:00Z"/>
+        </insert>
+        <insert tableName="participants">
+            <column name="participant_id" value="PF-10004"/>
+            <column name="name" value="Sneha Nair"/>
+            <column name="status" value="INACTIVE"/>
+            <column name="created_at" valueDate="2026-01-01T00:00:00Z"/>
+        </insert>
+        <insert tableName="participants">
+            <column name="participant_id" value="PF-10005"/>
+            <column name="name" value="Vikram Patel"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="created_at" valueDate="2026-01-01T00:00:00Z"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
