@@ -1,7 +1,7 @@
 
 
 ## Creating DB And User
-``` 
+```shell
 PS C:\Users\utk60> psql -U postgres
 Password for user postgres:
 
@@ -46,11 +46,11 @@ pfmanager=# \du
 
 ## Hibernate SQL Queries
 
-```
+```properties
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 ```
-```
+```shell
 Hibernate: 
     create table contribution_entries (
         transaction_id uuid not null,
@@ -87,4 +87,36 @@ Hibernate:
        add constraint FK2lt6nqpng2u99r2j29ivfrmhf 
        foreign key (participant_id) 
        references participants
+```
+
+## Expanding and Looking into JAR
+```shell
+Expand-Archive -LiteralPath ".\contribution-service-0.0.1-SNAPSHOT.jar" -DestinationPath ".\extracted"
+Copy-Item ".\contribution-service-0.0.1-SNAPSHOT.jar" ".\temp.zip"
+Expand-Archive -LiteralPath ".\temp.zip" -DestinationPath ".\extracted\"
+```
+
+## LOGGING: 
+```properties
+# --- DEBUGGING LIQUIBASE ISSUE -------------------------------------------------
+
+logging.level.liquibase=DEBUG
+logging.level.liquibase.changelog=DEBUG
+logging.level.liquibase.database=DEBUG
+```
+
+## DEPENDENCY DETAILS
+```shell
+.\gradle dependencyInsight --dependency liquibase-core --configuration runtimeClasspath
+.\gradlew.bat clean build --refresh-dependencies 
+```
+
+> The dependencies were not complete: 
+```gradle
+//	implementation 'org.liquibase:liquibase-core'
+	implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+```
+
+```sql 
+drop table if exists public.contribution_entries cascade;
 ```

@@ -27,7 +27,8 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 
 	// Liquibase migrations
-	implementation 'org.liquibase:liquibase-core'
+//	implementation 'org.liquibase:liquibase-core'
+	implementation 'org.springframework.boot:spring-boot-starter-liquibase'
 
 	// Actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
