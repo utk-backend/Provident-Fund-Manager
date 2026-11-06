@@ -120,3 +120,27 @@ logging.level.liquibase.database=DEBUG
 ```sql 
 drop table if exists public.contribution_entries cascade;
 ```
+
+---
+### OVERALL PROJECT REQUIREMENTS: 
+I'd follow this implementation order:
+1. Contribution Service<br>
+   Complete the ledger, APIs, database, and tests.
+<br>
+2. Participant Service<br>
+   Build participant and employer management, then integrate it with the Contribution Service.
+<br>
+3. Payroll Import Service<br>
+   Introduce CSV processing, file storage, and RabbitMQ.
+<br>
+4. Reconciliation Service<br>
+   Implement batch comparisons and discrepancy detection.
+<br>
+5. Notification Service<br>
+   Introduce asynchronous notifications and event handling.
+<br>
+6. Spring MVC Web Application<br>
+   Build the user-facing application on top of the completed APIs.
+<br>
+---
+
